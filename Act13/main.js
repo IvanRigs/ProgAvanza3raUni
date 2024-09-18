@@ -71,7 +71,16 @@ createApp({
 
             if (!userFind) {
                 if (!passwordError.value && !emailError.value && !nameError.value && !passwordError2.value && !nicknameError.value) { //Guardar
-                    
+
+                    const newUser = {
+                        user_id: users.value.length + 1,
+                        name: newUserName.value,
+                        email: newUserEmail.value,
+                        nickname: newUserNickname.value,
+                        password: newUserPassword.value
+                    }
+
+                    users.value.push(newUser);
 
                     closeModal();
                     reset();
@@ -106,6 +115,8 @@ createApp({
             emailError.value = false;
             nameError.value = false;
             passwordError.value = false;
+            nicknameError.value = false;
+            passwordError2.value = false;
         }
 
         //Validar Correo
