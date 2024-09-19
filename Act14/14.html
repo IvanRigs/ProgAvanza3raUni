@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="icon" href="Icon.PNG" type="image/x-icon">
+
+    <link href="style.css" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.datatables.net/2.1.6/js/dataTables.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+<body>
+
+    <div id="app" style="display: flex; flex-direction: column; width: 100%; height: 80vh; align-items: center; justify-content: center;">
+        <div v-if="sessionStarted == false" style="display: flex; flex-direction: column; align-items: center; padding: 30px; width: 35%; height: auto; box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3); border-radius: 15px;">
+            <h1>Login</h1>
+            <form @submit.prevent="onSubmit" style="display: flex; flex-direction: column; width: 100%; align-items: center;">
+                <div class="mb-3" style="width: 100%;">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" v-model="email" placeholder="Email">
+                </div>
+                <div class="mb-3" style="width: 100%;">
+                    <label class="form-label">Contrasena</label>
+                    <input type="password" class="form-control" v-model="password" placeholder="Contrasena">
+                </div>
+                <button type="submit" class="btn btn-primary">Entrar</button>
+            </form>
+        </div>
+
+        <div v-else style="display: flex; flex-direction: column; align-items: center; margin-top: 5vh; padding: 30px; width: auto; height: auto; box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3); border-radius: 15px;">
+            <div style="display: flex; width: 100%; justify-content: left;">
+                <h4>Usuarios</h4>
+            </div>
+            <table class="table">
+                <thead>
+                  <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Apodo</th>
+                        <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="user in users" :key="user.email">
+                        <td>{{ user.user_id }}</td>
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.nickname }}</td>
+                        <td>
+                            <button class="image-button">
+                                <img src="lapiz.png" alt="editar">
+                            </button>
+                            <button class="image-button">
+                                <img src="borrar.png" alt="borrar">
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="display: flex; width: 100%; justify-content: right;">
+                <button type="button" class="btn btn-primary" @click="openModal">
+                    Agregar
+                </button>    
+            </div>
+            
+            <div class="modal fade" id="newUsers" tabindex="-1" aria-labelledby="ModalScrollableTitle" aria-hidden="true"  data-bs-backdrop="static" >
+                <div class="modal-dialog modal-dialog-scrollable">
+                    <div class="modal-content">
+                        
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="ModalScrollableTitle">Nuevo usuario</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" @click="reset" aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            
+                            <label class="form-label">Nombre</label>
+                            <input type="text" class="form-control" v-model="newUserName" placeholder="Nombre" @click="nameError=false">
+                            <div v-if="nameError" class="text-danger">Por favor, introduce un nombre válido.</div>
+
+                            <label class="form-label">Correo</label>
+                            <input type="email" class="form-control" v-model="newUserEmail" placeholder="Correo" @click="emailError=false, emailError2=false">
+                            <div v-if="emailError" class="text-danger">Por favor, introduce un correo electrónico válido.</div>
+                            <div v-if="emailError2" class="text-danger">Correo electronico ya registrado.</div>
+
+                            <label class="form-label">Apodo</label>
+                            <input type="text" class="form-control" v-model="newUserNickname" placeholder="Apodo" @click="nicknameError=false">
+                            <div v-if="nicknameError" class="text-danger">Por favor, introduce un apodo válido.</div>
+
+                            <label class="form-label">Contrasena</label>
+                            <input type="password" class="form-control" v-model="newUserPassword" placeholder="Contrasena" @click="passwordError=false, passwordError2=false">
+                            <div v-if="passwordError" class="text-danger">Por favor, introduce contrasenas iguales.</div>
+                            <div v-if="passwordError2" class="text-danger">Por favor, introduce una contrasena.</div>
+
+                            <label class="form-label">Confirmar contrasena</label>
+                            <input type="password" class="form-control" v-model="newUserPasswordConfirm" placeholder="Confirmar contrasena" @click="passwordError=false, passwordError2=false">
+                            <div v-if="passwordError" class="text-danger">Por favor, introduce contrasenas iguales.</div>
+                            <div v-if="passwordError2" class="text-danger">Por favor, introduce una contrasena.</div>
+                           
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="reset">Cancelar</button>
+                            <button type="button" class="btn btn-primary" @click="saveNewUser">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+    <script src="main.js"></script>
+
+</body>
+</html>
