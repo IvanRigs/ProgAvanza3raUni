@@ -10,6 +10,9 @@ createApp({
         const nicknameError = ref(false);
         const passwordError = ref(false);
         const passwordError2 = ref(false);
+        const userEditName = ref('');
+        const userEditEmail = ref('');
+        const userEditNickname = ref('');
         let newUserName = ref('');
         let newUserEmail = ref('');
         let newUserNickname = ref('');
@@ -98,9 +101,12 @@ createApp({
             myModal.show();
         };
 
+        //Editar
         const selectUser = (userId) => {
             openModal('#editUsers')
-            console.log(users.value[userId].name);
+            userEditName.value = users.value[userId - 1].name;
+            userEditEmail.value = users.value[userId - 1].email;
+            userEditNickname.value = users.value[userId - 1].nickname;
         }
 
         const reset = () => {
@@ -116,6 +122,9 @@ createApp({
             passwordError.value = false;
             nicknameError.value = false;
             passwordError2.value = false;
+            userEditName.value = '';
+            userEditEmail.value = '';
+            userEditNickname.value = '';
         }
 
         //Validar Correo
@@ -148,6 +157,9 @@ createApp({
             nicknameError,
             passwordError,
             passwordError2,
+            userEditName,
+            userEditEmail,
+            userEditNickname,
             reset,
             saveNewUser,
             onSubmit,
