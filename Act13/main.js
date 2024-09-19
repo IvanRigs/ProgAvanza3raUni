@@ -7,6 +7,7 @@ createApp({
         const email = ref('');
         const password = ref('');
         const emailError = ref(false);
+        const emailError2 = ref(false);
         const nameError = ref(false);
         const nicknameError = ref(false);
         const passwordError = ref(false);
@@ -28,12 +29,6 @@ createApp({
                 response.forEach((e) => {
                     if ((email.value == e.email) && (password.value == e.password)) {
                         found = true;
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Bienvenido ' + e.name,
-                            text: 'Sesion iniciada con exito.',
-                            confirmButtonText: 'Aceptar'
-                        });
                         users.value = response;
                     }
                 });
@@ -54,14 +49,9 @@ createApp({
         const saveNewUser = () => {
             let userFind = false;
             emailError.value = false;
+            emailError2.value = false;
             nameError.value = false;
             passwordError.value = false;
-
-            nameError.value = (!validateName(newUserName.value));
-            emailError.value = (!validateEmail(newUserEmail.value));
-            nicknameError.value = (newUserNickname.value == '');
-            passwordError.value = (newUserPasswordConfirm.value != newUserPassword.value);
-            passwordError2.value = (newUserPasswordConfirm.value == '');
 
             users.value.forEach((u) => {
                 if (u.email == newUserEmail.value) {
@@ -69,29 +59,34 @@ createApp({
                 }
             });
 
-            if (!userFind) {
-                if (!passwordError.value && !emailError.value && !nameError.value && !passwordError2.value && !nicknameError.value) { //Guardar
+            nameError.value = (!validateName(newUserName.value));
+            emailError.value = (!validateEmail(newUserEmail.value));
+            nicknameError.value = (newUserNickname.value == '');
+            passwordError.value = (newUserPasswordConfirm.value != newUserPassword.value);
+            passwordError2.value = (newUserPasswordConfirm.value == '');
+            emailError2.value = userFind;
+            
+            if (!userFind && !passwordError.value && !emailError.value && !nameError.value && !passwordError2.value && !nicknameError.value) { //Guardar
 
-                    const newUser = {
-                        user_id: users.value.length + 1,
-                        name: newUserName.value,
-                        email: newUserEmail.value,
-                        nickname: newUserNickname.value,
-                        password: newUserPassword.value
-                    }
-
-                    users.value.push(newUser);
-
-                    closeModal();
-                    reset();
+                const newUser = {
+                    user_id: users.value.length + 1,
+                    name: newUserName.value,
+                    email: newUserEmail.value,
+                    nickname: newUserNickname.value,
+                    password: newUserPassword.value
                 }
-            }else {
+
+                users.value.push(newUser);
+
                 Swal.fire({
-                    icon: 'error',
-                    title: 'Registro invalido',
-                    text: 'Email ya registrado.',
+                    icon: 'success',
+                    title: 'Agregado',
+                    text: 'Usuario agregado con exito.',
                     confirmButtonText: 'Aceptar'
                 });
+
+                closeModal();
+                reset();
             }
         };
 
@@ -113,6 +108,7 @@ createApp({
             newUserPassword.value = '';
             newUserPasswordConfirm.value = '';
             emailError.value = false;
+            emailError2.value = false;
             nameError.value = false;
             passwordError.value = false;
             nicknameError.value = false;
@@ -144,6 +140,7 @@ createApp({
             newUserPassword,
             newUserPasswordConfirm,
             emailError,
+            emailError2,
             nameError,
             nicknameError,
             passwordError,
