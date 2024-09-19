@@ -1,5 +1,3 @@
-new DataTable('#table');
-
 const { createApp, ref } = Vue;
 
 createApp({
