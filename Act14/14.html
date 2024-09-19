@@ -18,6 +18,7 @@
 </head>
 <body>
 
+    <!-- Login -->
     <div id="app" style="display: flex; flex-direction: column; width: 100%; height: 80vh; align-items: center; justify-content: center;">
         <div v-if="sessionStarted == false" style="display: flex; flex-direction: column; align-items: center; padding: 30px; width: 35%; height: auto; box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3); border-radius: 15px;">
             <h1>Login</h1>
@@ -34,6 +35,7 @@
             </form>
         </div>
 
+        <!-- Tabla usuarios -->
         <div v-else style="display: flex; flex-direction: column; align-items: center; margin-top: 5vh; padding: 30px; width: 50%; height: auto; box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3); border-radius: 15px;">
             <div style="display: flex; width: 100%; justify-content: left; margin-bottom: 10px;">
                 <h4>Usuarios</h4>
@@ -52,7 +54,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="user in users" :key="user.email" style="cursor: pointer;">
+                    <tr v-for="user in users" :key="user.email" @click="selectUser(user.user_id)" style="cursor: pointer;">
                         <td>{{ user.user_id }}</td>
                         <td>{{ user.name }}</td>
                         <td>{{ user.email }}</td>
@@ -62,11 +64,12 @@
             </table>
 
             <div style="display: flex; width: 100%; justify-content: right;">
-                <button type="button" class="btn btn-primary" @click="openModal">
+                <button type="button" class="btn btn-primary" @click="openModal('#newUsers')">
                     Agregar
                 </button>    
             </div>
             
+            <!-- Agregar nuevo usuario -->
             <div class="modal fade" id="newUsers" tabindex="-1" aria-labelledby="ModalScrollableTitle" aria-hidden="true"  data-bs-backdrop="static" >
                 <div class="modal-dialog modal-dialog-scrollable">
                     <div class="modal-content">
@@ -119,6 +122,27 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+             <!-- Editar -->
+             <div class="modal fade" id="editUsers" tabindex="-1" aria-labelledby="ModalScrollableTitle" aria-hidden="true"  data-bs-backdrop="static" >
+                <div class="modal-dialog modal-dialog-scrollable">
+                    <div class="modal-content">
+                        
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5">Editar { user.name.value }</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" @click="reset" aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="reset">Volver</button>
+                            <button type="button" class="btn btn-primary" @click="saveNewUser">Guardar</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 

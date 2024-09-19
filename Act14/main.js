@@ -25,7 +25,7 @@ createApp({
             .then((response) => {
                 let found = false;
                 response.forEach((e) => {
-                    if ((email.value == e.email) && (password.value == e.password)) {
+                    if ((email.value.toLowerCase() === e.email.toLowerCase()) && (password.value === e.password)) {
                         found = true;
                         users.value = response;
                     }
@@ -52,16 +52,16 @@ createApp({
             passwordError.value = false;
 
             users.value.forEach((u) => {
-                if (u.email == newUserEmail.value) {
+                if (u.email.toLowerCase() === newUserEmail.value.toLowerCase()) {
                     userFind = true;
                 }
             });
 
             nameError.value = (!validateName(newUserName.value));
             emailError.value = (!validateEmail(newUserEmail.value));
-            nicknameError.value = (newUserNickname.value == '');
-            passwordError.value = (newUserPasswordConfirm.value != newUserPassword.value);
-            passwordError2.value = (newUserPasswordConfirm.value == '');
+            nicknameError.value = (newUserNickname.value === '');
+            passwordError.value = (newUserPasswordConfirm.value !== newUserPassword.value);
+            passwordError2.value = (newUserPasswordConfirm.value === '');
             emailError2.value = userFind;
             
             if (!userFind && !passwordError.value && !emailError.value && !nameError.value && !passwordError2.value && !nicknameError.value) { //Guardar
@@ -83,20 +83,25 @@ createApp({
                     confirmButtonText: 'Aceptar'
                 });
 
-                closeModal();
+                closeModal('#newUsers');
                 reset();
             }
         };
 
-        const closeModal = () => {
-            const myModal = bootstrap.Modal.getOrCreateInstance('#newUsers')
+        const closeModal = (modal) => {
+            const myModal = bootstrap.Modal.getOrCreateInstance(modal)
             myModal.hide();
         };
 
-        const openModal = () => {
-            const myModal = bootstrap.Modal.getOrCreateInstance('#newUsers')
+        const openModal = (modal) => {
+            const myModal = bootstrap.Modal.getOrCreateInstance(modal)
             myModal.show();
         };
+
+        const selectUser = (userId) => {
+            openModal('#editUsers')
+            console.log(users.value[userId].name);
+        }
 
         const reset = () => {
             // Reiniciar los campos
@@ -146,7 +151,8 @@ createApp({
             reset,
             saveNewUser,
             onSubmit,
-            openModal
+            openModal,
+            selectUser
         };
     }
 }).mount('#app');
