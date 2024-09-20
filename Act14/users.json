@@ -69,16 +69,5 @@
     "created_at": "2016-12-09T12:01:23.787Z",
     "updated_at": "2016-12-09T12:01:23.787Z",
     "email_verified": false
-  },
-  {
-    "name": "Invisible",
-    "user_id": "6",
-    "email": "",
-    "password": "",
-    "given_name": "Dummy",
-    "family_name": "User",
-    "created_at": "2016-12-09T12:01:23.787Z",
-    "updated_at": "2016-12-09T12:01:23.787Z",
-    "email_verified": false
   }
 ]

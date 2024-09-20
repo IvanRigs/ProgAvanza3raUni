@@ -72,8 +72,15 @@ createApp({
             
             if (!userFind && !passwordError.value && !emailError.value && !nameError.value && !passwordError2.value && !nicknameError.value) { //Guardar
 
+                let id = 0;
+                users.value.forEach((u) => {
+                    if (u.user_id > id){
+                        id = u.user_id;
+                    }
+                });
+
                 const newUser = {
-                    user_id: users.value.length + 1,
+                    user_id: (parseInt(id, 10) + 1),
                     name: newUserName.value,
                     email: newUserEmail.value,
                     nickname: newUserNickname.value,
@@ -106,20 +113,27 @@ createApp({
 
         //Editar
         const selectUser = (userId) => {
+            users.value.forEach((u, index) => {
+                if (u.user_id === userId) {
+                    userId = index;
+                }
+            });
+
+
             openModal('#editUsers')
-            userEditName.value = users.value[userId - 1].name;
+            userEditName.value = users.value[userId].name;
             userName.value = userEditName.value;
-            userEditEmail.value = users.value[userId - 1].email;
+            userEditEmail.value = users.value[userId].email;
             userEditEmail2.value = userEditEmail.value;
-            userEditNickname.value = users.value[userId - 1].nickname;
-            userEditID.value = userId;
+            userEditNickname.value = users.value[userId].nickname;
+            userEditID = userId;
         }
 
         const saveEditUser = () => {
             let userFind = false;
 
             users.value.forEach((u) => {
-                if ((u.email.toLowerCase() === userEditEmail.value.toLowerCase()) && (userEditEmail2.value != userEditEmail.value)) {
+                if ((u.email.toLowerCase() === userEditEmail.value.toLowerCase()) && (userEditEmail2.value !== userEditEmail.value)) {
                     userFind = true;
                 }
             });
@@ -130,12 +144,20 @@ createApp({
             nicknameError.value = (userEditNickname.value === '');
 
             if (!nameError.value && !emailError.value && !nicknameError.value && !userFind) {
-                users.value[userEditID.value - 1].name = userEditName.value;
-                users.value[userEditID.value - 1].email = userEditEmail.value;
-                users.value[userEditID.value - 1].nickname = userEditNickname.value;
+                users.value[userEditID].name = userEditName.value;
+                users.value[userEditID].email = userEditEmail.value;
+                users.value[userEditID].nickname = userEditNickname.value;
                 closeModal('#editUsers');
                 reset();
             }
+        }
+
+        // Borrar usuario
+        const userDelete = () => {
+            users.value.splice(userEditID, 1);
+            closeModal('#editUsers');
+
+            reset();
         }
 
         const reset = () => {
@@ -145,6 +167,7 @@ createApp({
             newUserNickname.value = '';
             newUserPassword.value = '';
             newUserPasswordConfirm.value = '';
+            userEditID.value = '';
             emailError.value = false;
             emailError2.value = false;
             nameError.value = false;
@@ -193,7 +216,8 @@ createApp({
             onSubmit,
             openModal,
             selectUser,
-            saveEditUser
+            saveEditUser,
+            userDelete
         };
     }
 }).mount('#app');
