@@ -130,7 +130,7 @@
                     <div class="modal-content">
                         
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" style="display: flex; margin-right: 5px">{{ userEditName }}</h1>
+                            <h1 class="modal-title fs-5" style="display: flex; margin-right: 5px">{{ userName }}</h1>
                             <p class="text-body-secondary" style="margin-bottom: 0; margin-top: auto">Editar</p>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" @click="reset" aria-label="Close"></button>
                         </div>
@@ -140,29 +140,39 @@
                             <div class="mb-3 row">
                                 <label for="inputNombre" class="col-sm-2 col-form-label">Nombre</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputNombre" :value="userEditName" >
+                                    <input @click="reset" v-model="userEditName" type="text" class="form-control" id="inputNombre" >
                                 </div>
+                                <div v-if="nameError" class="text-danger">Por favor, introduce un nombre válido.</div>
                             </div>
 
                             <div class="mb-3 row">
                                 <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputEmail" :value="userEditEmail" >
+                                    <input @click="reset" type="text" class="form-control" id="inputEmail" v-model="userEditEmail" >
                                 </div>
+                                <div v-if="emailError" class="text-danger">Por favor, introduce un correo </div>
+                                <div v-if="emailError2" class="text-danger">Correo electronico ya registrado.</div>
                             </div>
 
                             <div class="mb-3 row">
                                 <label for="inputNickname" class="col-sm-2 col-form-label">Nickname</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputNickname" :value="userEditNickname" >
+                                    <input @click="reset" type="text" class="form-control" id="inputNickname" v-model="userEditNickname" >
                                 </div>
+                                <div v-if="nicknameError" class="text-danger">Por favor, introduce un apodo válido.</div>
                             </div>
 
                         </div>
 
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="reset">Cancelar</button>
-                            <button type="button" class="btn btn-primary" @click="saveEditUser">Guardar</button>
+                        <div class="modal-footer" style=" justify-content: start;">
+                            <div style="width: auto; flex-direction: row;">
+                                <button class="image-button"><img style="width: 20px;" src="./borrar.png" alt="borrar"></button>
+                            </div>
+                            <div style="display: flex; width: 90%; justify-content: end;">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="reset" style="margin: 4px;">Cancelar</button>
+                                <button type="button" class="btn btn-primary" @click="saveEditUser" style="margin: 4px;">Guardar</button>
+                            </div>
+
                         </div>
                     </div>
                 </div>

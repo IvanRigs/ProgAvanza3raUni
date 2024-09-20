@@ -12,8 +12,10 @@ createApp({
         const passwordError2 = ref(false);
         const userEditName = ref('');
         const userEditEmail = ref('');
+        const userEditEmail2 = ref('');
         const userEditNickname = ref('');
         let newUserName = ref('');
+        let userName = ref('');
         let newUserEmail = ref('');
         let newUserNickname = ref('');
         let newUserPassword = ref('');
@@ -106,17 +108,34 @@ createApp({
         const selectUser = (userId) => {
             openModal('#editUsers')
             userEditName.value = users.value[userId - 1].name;
+            userName.value = userEditName.value;
             userEditEmail.value = users.value[userId - 1].email;
+            userEditEmail2.value = userEditEmail.value;
             userEditNickname.value = users.value[userId - 1].nickname;
             userEditID.value = userId;
         }
 
         const saveEditUser = () => {
-            users.value[userEditID.value - 1].name = userEditName.value;
-            users.value[userEditID.value - 1].email = userEditEmail.value;
-            users.value[userEditID.value - 1].nickname = userEditNickname.value;
-            closeModal('#editUsers');
-            reset();
+            let userFind = false;
+
+            users.value.forEach((u) => {
+                if ((u.email.toLowerCase() === userEditEmail.value.toLowerCase()) && (userEditEmail2.value != userEditEmail.value)) {
+                    userFind = true;
+                }
+            });
+
+            nameError.value = (!validateName(userEditName.value));
+            emailError.value = (!validateEmail(userEditEmail.value));
+            emailError2.value = userFind;
+            nicknameError.value = (userEditNickname.value === '');
+
+            if (!nameError.value && !emailError.value && !nicknameError.value && !userFind) {
+                users.value[userEditID.value - 1].name = userEditName.value;
+                users.value[userEditID.value - 1].email = userEditEmail.value;
+                users.value[userEditID.value - 1].nickname = userEditNickname.value;
+                closeModal('#editUsers');
+                reset();
+            }
         }
 
         const reset = () => {
@@ -132,10 +151,6 @@ createApp({
             passwordError.value = false;
             nicknameError.value = false;
             passwordError2.value = false;
-            userEditName.value = '';
-            userEditEmail.value = '';
-            userEditNickname.value = '';
-            userEditID.value = '';
         }
 
         //Validar Correo
@@ -172,6 +187,7 @@ createApp({
             userEditEmail,
             userEditNickname,
             userEditID,
+            userName,
             reset,
             saveNewUser,
             onSubmit,
