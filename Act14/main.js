@@ -18,6 +18,7 @@ createApp({
         let newUserNickname = ref('');
         let newUserPassword = ref('');
         let newUserPasswordConfirm = ref('');
+        let userEditID = ref('');
         let sessionStarted = ref(false);
         let users = ref([]);
 
@@ -107,6 +108,15 @@ createApp({
             userEditName.value = users.value[userId - 1].name;
             userEditEmail.value = users.value[userId - 1].email;
             userEditNickname.value = users.value[userId - 1].nickname;
+            userEditID.value = userId;
+        }
+
+        const saveEditUser = () => {
+            users.value[userEditID.value - 1].name = userEditName.value;
+            users.value[userEditID.value - 1].email = userEditEmail.value;
+            users.value[userEditID.value - 1].nickname = userEditNickname.value;
+            closeModal('#editUsers');
+            reset();
         }
 
         const reset = () => {
@@ -125,6 +135,7 @@ createApp({
             userEditName.value = '';
             userEditEmail.value = '';
             userEditNickname.value = '';
+            userEditID.value = '';
         }
 
         //Validar Correo
@@ -160,11 +171,13 @@ createApp({
             userEditName,
             userEditEmail,
             userEditNickname,
+            userEditID,
             reset,
             saveNewUser,
             onSubmit,
             openModal,
-            selectUser
+            selectUser,
+            saveEditUser
         };
     }
 }).mount('#app');
