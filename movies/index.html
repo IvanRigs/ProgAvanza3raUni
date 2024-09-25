@@ -11,46 +11,52 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <link href="./styleS.css" rel="stylesheet">
+    <link href="styleSa.css" rel="stylesheet">
 
 </head>
+
 <body class="cuerpo-principal">
 
-<!-- Barra de navegacion -->
-<div id="app" class="contenedor-navbar">
-    <div class="contenedor-nombre-navbar">
-        <p class="fw-bold">r i s k l e i s.</p>
-    </div>
-
-    <div class="contenedor-iniciosesion-navbar">
-        <button class="btn btn-outline-light">Iniciar sesion</button>
-    </div>
-</div>
-
-<!-- Cuerpo 1 -->
-<div class="contenedor-uno-cuerpo">
-    <div class="contenedor-uno-cuerpouno">
-        <div class="contenedor-uno-cuerpouno-uno">
-            <p class="fw-bold">Comienza una nueva aventura ahora mismo</p>
-            <p class="fw-semibold">A partir de $89. Cancela cuando quieras.</p>
-            <p class="">¿Quieres ver Peliculas ya? Ingresa tu email para crear una cuenta.</p>
-
-            <div class="mb-3">
-                <input v-model="email" type="email" class="form-control" id="exampleFormControlInput1" placeholder="Email">
-                <button class="btn btn-primary">Comenzar</button>
+<div id="app" >
+    <div v-if="!registroExitoso" >
+        <!-- Barra de navegacion -->
+        <div class="contenedor-navbar">
+            <div class="contenedor-nombre-navbar">
+                <p class="fw-bold">r i s k l e i s.</p>
             </div>
 
+            <div class="contenedor-iniciosesion-navbar">
+                <a href="login.html" class="btn btn-outline-light">Iniciar sesion</a>
+            </div>
         </div>
-    </div>
 
-    <div class="contenedor-uno-cuerpodos">
-        <div class="img-banner-div">
-            <img src="banner.jpg" class="img-banner">
+        <!-- Cuerpo 1 -->
+        <div class="contenedor-uno-cuerpo">
+            <div class="contenedor-uno-cuerpouno">
+                <div class="contenedor-uno-cuerpouno-uno">
+                    <p class="fw-bold">Comienza una nueva aventura ahora mismo</p>
+                    <p class="fw-semibold">Totalmente gratis.</p>
+                    <p class="">¿Quieres empezar ya? Ingresa tu email para crear una cuenta.</p>
+
+                    <div class="mb-3">
+                        <input v-model="email" type="email" class="form-control" id="exampleFormControlInput1" placeholder="Email">
+                        <button @click="registrarse" class="btn btn-primary">Comenzar</button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="contenedor-uno-cuerpodos">
+                <div class="img-banner-div">
+                    <img src="banner.jpg" class="img-banner" alt="img">
+                </div>
+            </div>
         </div>
+
     </div>
 </div>
 
-<script src="mainF.js"></script>
+<script src="main.js"></script>
 
 </body>
 </html>
